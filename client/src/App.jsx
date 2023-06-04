@@ -1,7 +1,10 @@
+import React from 'react';
+import GroceryList from './components/GroceryList';
+
 function App() {
   return (
     <div>
-      Hello World
+      <GroceryList />
     </div>
   );
 }
