@@ -15,6 +15,8 @@ const RateLimit = require('express-rate-limit');
 const logger = require('morgan');
 // enables CORS which helps us interact with APIs from different origins
 const cors = require('cors');
+// mongoDB connection
+const InitiateMongoServer = require("./db");
 
 // make POST requests easier by allowing us to get data from req objects
 app.use(express.json());
@@ -22,22 +24,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 app.use(helmet());
 app.use(logger('combined'));
-
-// the server will handle at maximum 60 requests per minute
-const limiter = RateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 60,
-});
-app.use(limiter);
+InitiateMongoServer();
 
 // bunch of settings to hopefully avoid hellish CORS errors in the browser
 const corsOptions = {
     origin: process.env.CLIENT_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     credentials: true
 };
 app.use(cors(corsOptions));
+
+const groceryList = require("./routes/groceryList");
+app.use("/groceryList", groceryList);
+
+// the server will handle at maximum 300 requests per minute
+const limiter = RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 300,
+});
+app.use(limiter);
 
 app.listen(PORT, (req, res) => {
     console.log(`Server starting at PORT ${PORT}`);
