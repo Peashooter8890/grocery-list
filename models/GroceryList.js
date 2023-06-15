@@ -6,12 +6,26 @@ const GroceryItemSchema = new mongoose.Schema({
         required: true
     },
     name: {
-        type: String,
-    }
+        type: String
+    },
 });
 
 const GroceryListSchema = new mongoose.Schema({
-    groceryItems: [GroceryItemSchema]
+    items: [GroceryItemSchema],
+    creationDate: {
+        type: Date,
+        default: Date.now
+    },
 });
 
-module.exports = mongoose.model("groceryList", GroceryListSchema, 'groceryList');
+const GroceryCollectionSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    groceryLists: [GroceryListSchema],
+});
+
+const GroceryCollection = mongoose.model("GroceryCollection", GroceryCollectionSchema);
+
+module.exports = GroceryCollection;
