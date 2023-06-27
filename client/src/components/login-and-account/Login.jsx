@@ -1,53 +1,129 @@
 import React, { useState } from "react";
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../../axiosConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginStatus } from '../../actions/AuthActions';
+import PopupWindow from "../utility/PopupWindow";
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const [name, setName] = useState('');
+    const [signupEmail, setSignupEmail] = useState('');
+    const [loginEmail, setLoginEmail] = useState('');
+    const [signupPassword, setSignupPassword] = useState('');
+    const [loginPassword, setLoginPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
-        setError(null);
+        setErrorMessage(null);
         try {
-            const response = await axiosInstance.post('/api/auth/login', { 
-                email: username, 
-                password 
+            console.log(signupPassword);
+            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
+                name: name,
+                email: signupEmail, 
+                password: signupPassword,
             });
-            // handle successful login, store tokens, redirect user etc.
+            dispatch(setLoginStatus(true));
+            setSuccessMessage('Succesfully created account.');
         } catch (err) {
-            // if error response is available, set error state to error message
+            dispatch(setLoginStatus(false));
             if (err.response) {
-                setError(err.response.data.error);
+                setErrorMessage(err.response.data.message);
             } else {
-                setError('An error occurred');
+                setErrorMessage('An error occurred.');
+            }
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setErrorMessage(null);
+        try {
+            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/login`, { 
+                email: loginEmail,
+                password: loginPassword,
+            });
+            dispatch(setLoginStatus(true));
+            setSuccessMessage('Succesfully logged into account.');
+        } catch (err) {
+            dispatch(setLoginStatus(false));
+            if (err.response) {
+                setErrorMessage(err.response.data.message);
+            } else {
+                setErrorMessage('An error occurred.');
             }
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>User name</label>
-            <input 
-                value={username} 
-                onChange={(e) => setUsername(e.target.value)} 
-                type="text" 
-                placeholder="user name" 
-                name="username" 
-                id="username" 
+        <div>
+            <PopupWindow 
+                title="FRESHLY BAKED NON-SHADY COOKIES. They are here. NOW." 
+                message="Our server baked some hot FRESHLY BAKED NON-SHADY COOKIES. Please enable our FRESHLY BAKED NON-SHADY COOKIES in your browser so that your browser can taste our FRESHLY BAKED NON-SHADY COOKIES. 
+                If you do not give your browser our FRESHLY BAKED NON-SHADY COOKIES, it will come back with a bloody vengeance by ceasing to store your login information. If you value convenience over false assumptions 
+                (such as the assumption that we are using shady cookies to enforce menace onto you, which we clearly aren't, because we don't know any buyers right now who would buy your personal information), please enable cookies so that we can spread our FRESHLY BAKED NON-SHADY COOKIES onto the world. Thank you."
             />
-            <label>Password</label>
-            <input 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                type="password" 
-                placeholder="password" 
-                name="password" 
-                id="password" 
-            />
-            {error && <div className="error">{error}</div>}
-            <button type="submit">Log In</button>
-        </form>
+            <form onSubmit={handleLogin}>
+                <label>Email</label>
+                <input 
+                    value={loginEmail} 
+                    onChange={(e) => setLoginEmail(e.target.value)} 
+                    type="text" 
+                    placeholder="email" 
+                    name="email" 
+                    required
+                />
+                <label>Password</label>
+                <input 
+                    value={loginPassword} 
+                    onChange={(e) => setLoginPassword(e.target.value)} 
+                    type="password" 
+                    placeholder="password" 
+                    name="password" 
+                    required
+                />
+                <button type="submit">Log In</button>
+            </form>
+            <form onSubmit={handleSignUp}>
+                <label>Name</label>
+                <input 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)} 
+                    type="text" 
+                    placeholder="name" 
+                    name="name" 
+                    required
+                />
+                <input 
+                    value={signupEmail} 
+                    onChange={(e) => setSignupEmail(e.target.value)} 
+                    type="text" 
+                    placeholder="email" 
+                    name="email" 
+                    required
+                />
+                <label>Password</label>
+                <input 
+                    value={signupPassword} 
+                    onChange={(e) => setSignupPassword(e.target.value)} 
+                    type="password" 
+                    placeholder="password" 
+                    name="password" 
+                    required
+                />
+                <button type="submit">Sign Up</button>
+            </form>
+            <span style={{color: "green"}}>{successMessage && <div className="successMessage">{successMessage}</div>}</span>
+            <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
+            {isLoggedIn 
+                ? 
+                <span style={{color:"green"}}>You are logged in</span>
+                : 
+                <span style={{color:"red"}}>You are logged out</span>
+            }
+        </div>
     );
 };
 

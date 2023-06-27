@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 // import secret environmental variables
-require('dotenv').config({ path: './.env' });
+require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
 // compression reduces size of http responses, improving performance.
@@ -38,7 +38,9 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+const user = require("./routes/user");
 const groceryList = require("./routes/groceryList");
+app.use("/user", user);
 app.use("/groceryList", groceryList);
 
 // the server will handle at maximum 300 requests per minute
@@ -52,7 +54,7 @@ app.use(limiter);
 app.use((err, req, res, next) => {
     console.error(err.stack); 
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({ error: err.message });
+    res.status(statusCode).json({ message: err.message });
 });
 
 app.listen(PORT, (req, res) => {
