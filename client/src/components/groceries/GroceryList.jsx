@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axiosInstance from '../../axiosConfig';
+import "../../App.css";
 
 const GroceryList = () => {
     const [groceryList, setGroceryList] = useState([]);
@@ -59,7 +60,7 @@ const GroceryList = () => {
     };
 
     return (
-        <div>
+        <div class="grocery-list">
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="groceryList">
                     {/* 

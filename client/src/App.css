@@ -21,3 +21,17 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.grocery-list {
+    width: 90%;
+    margin: auto;
+}
+
+.grocery-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.grocery-list ul li {
+    margin-bottom: 15px;
+}
