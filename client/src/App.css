@@ -1,0 +1,37 @@
+.login {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.login form {
+    width: 300px;
+    margin: 100px auto;
+    border: 1px solid rgb(120, 120, 158);
+    padding: 20px;
+    min-height: 80px;
+}
+
+.login form label {
+    margin-right:20px;
+}
+
+.login form section {
+    padding: 4px 5px 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.grocery-list {
+    width: 90%;
+    margin: auto;
+}
+
+.grocery-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.grocery-list ul li {
+    margin-bottom: 15px;
+}
