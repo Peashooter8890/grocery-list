@@ -59,7 +59,7 @@ const Login = () => {
     };
 
     return (
-        <div class="login">
+        <div className="login">
             <PopupWindow 
                 title="FRESHLY BAKED NON-SHADY COOKIES. They are here. NOW." 
                 message="Our server baked some hot FRESHLY BAKED NON-SHADY COOKIES. Please enable our FRESHLY BAKED NON-SHADY COOKIES in your browser so that your browser can taste our FRESHLY BAKED NON-SHADY COOKIES. 
@@ -95,7 +95,7 @@ const Login = () => {
                     <button type="submit">Log In</button>
                 </section>
             </form>
-            <form class="register" onSubmit={handleSignUp}>
+            <form className="register" onSubmit={handleSignUp}>
                 <section>
                     <label>Name</label>
                     <input 

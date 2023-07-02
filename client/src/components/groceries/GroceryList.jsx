@@ -60,7 +60,7 @@ const GroceryList = () => {
     };
 
     return (
-        <div class="grocery-list">
+        <div className="grocery-list">
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="groceryList">
                     {/* 
