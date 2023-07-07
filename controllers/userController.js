@@ -20,7 +20,7 @@ exports.signup = async (req, res, next) => {
         if (!validator.isEmail(email)) {
             throw new Error('Please provide a valid email format.');
         }
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
         if (!passwordRegex.test(password)) {
             console.log(req.body);
             console.log(password);
