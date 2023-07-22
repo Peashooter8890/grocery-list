@@ -20,7 +20,6 @@ const Login = () => {
         e.preventDefault();
         setErrorMessage(null);
         try {
-            console.log(signupPassword);
             const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
                 name: name,
                 email: signupEmail, 
