@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import axiosInstance from '../../axiosConfig';
+import axiosInstance from '../../axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginStatus } from '../../actions/AuthActions';
+import { setLoginStatus } from '../../features/AuthSlice';
 import PopupWindow from "../utility/PopupWindow";
+import ReverseAuthProtector from "../../utility/ReverseAuthProtector";
 import '../../App.css';
 
 const Login = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [signupEmail, setSignupEmail] = useState('');
     const [loginEmail, setLoginEmail] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
         setErrorMessage(null);
         try {
             const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
-                name: name,
+                username,
                 email: signupEmail, 
                 password: signupPassword,
             });
@@ -98,8 +99,8 @@ const Login = () => {
                 <section>
                     <label>Name</label>
                     <input 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
                         type="text" 
                         placeholder="name" 
                         name="name" 
@@ -148,4 +149,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ReverseAuthProtector(Login);

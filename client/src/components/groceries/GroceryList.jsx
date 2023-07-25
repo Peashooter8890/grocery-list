@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import axiosInstance from '../../axiosConfig';
+import axiosInstance from '../../axiosInstance';
+import AuthProtector from '../../utility/AuthProtector'
 import "../../App.css";
 
 const GroceryList = () => {
@@ -103,4 +104,4 @@ const GroceryList = () => {
     );
 };
 
-export default GroceryList;
+export default AuthProtector(GroceryList);
