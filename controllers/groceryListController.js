@@ -37,6 +37,31 @@ exports.addGroceryList = async (req, res, next) => {
     }
 };
 
+exports.renameGroceryList = async (req, res, next) => {
+    try {
+        const { id } = req.params; 
+        const { name } = req.body; 
+
+        let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
+        if (!groceryCollection) {
+            throw new Error("No grocery collection found for this user."); 
+        }
+        const groceryList = groceryCollection.groceryLists.find(list => list.id === id);
+        if (!groceryList) {
+            throw new Error("No grocery list found with this id."); 
+        }
+        groceryList.name = name;
+        await groceryCollection.save();
+
+        res.status(200).json({ message: "Grocery list renamed successfully.", newGroceryList: groceryList });
+    } catch (error) {
+        if (!error.message) {
+            error.message = "Something went wrong with renaming the grocery list.";
+        }
+        next(error);
+    }
+};
+
 exports.deleteGroceryList = async (req, res, next) => {
     try {
         let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });

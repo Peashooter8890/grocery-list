@@ -13,7 +13,6 @@ exports.signup = async (req, res, next) => {
             throw new Error('Please provide a valid email format.');
         }
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        console.log(password);
         if (!passwordRegex.test(password)) {
             throw new Error('Password should be at least 8 characters long and should contain at least one number and letter.');
         }
@@ -148,7 +147,6 @@ exports.deleteAccount = async (req, res, next) => {
 };
 
 exports.refreshTokens = async (req, res, next) => {
-    console.log(req.body);
     const { refreshToken } = req.body;
     try {
         if (!refreshToken) {

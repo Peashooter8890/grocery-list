@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 // props is an object with title and message
-function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack, submitType }) {
+function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
   const [name, setName] = useState(initialName || '');
 
   return (
@@ -30,7 +30,7 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack, subm
           value={name}
           onChange={e => setName(e.target.value)} // update the input value
         />
-        <button onClick={() => onSubmit(submitType, id, name)}>Submit</button>
+        <button onClick={() => onSubmit(id, name)}>Submit</button>
         <button onClick={onBack}>Go Back</button>
       </Modal>
     </div>

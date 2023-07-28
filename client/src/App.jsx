@@ -43,6 +43,7 @@ function App() {
         <Route path='/login' element={<Login/>} />
         <Route path='/grocery' element={<GroceryCollection/>} />
         <Route path='/grocerylist' element={<GroceryList/>} />
+        <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </BrowserRouter> 
   );

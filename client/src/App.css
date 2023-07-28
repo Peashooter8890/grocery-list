@@ -39,3 +39,8 @@
 .grocery-list ul li {
     margin-bottom: 15px;
 }
+
+.column-flex {
+    display: flex;
+    flex-direction: column;
+}

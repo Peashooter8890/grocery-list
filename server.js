@@ -54,7 +54,7 @@ module.exports = app;
 
 app.use((err, res) => {
     // error handling middleware
-    console.error(err.stack); 
     const statusCode = err.statusCode || 500;
+    const message = err.message || "Something went wrong in the server, and we don't have a message for it.";
     res.status(statusCode).json({ message });
 });
