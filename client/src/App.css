@@ -23,6 +23,10 @@
 }
 
 .grocery-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 90%;
     margin: auto;
 }
@@ -34,4 +38,9 @@
 
 .grocery-list ul li {
     margin-bottom: 15px;
+}
+
+.column-flex {
+    display: flex;
+    flex-direction: column;
 }

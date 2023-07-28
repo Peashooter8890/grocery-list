@@ -2,21 +2,21 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const AuthProtector = WrappedComponent => {
-  const RequireAuth = props => {
+const ReverseAuthProtector = WrappedComponent => {
+  const RequireNoAuth = props => {
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (!isLoggedIn) {
-        navigate("/login");
+      if (isLoggedIn) {
+        navigate("/grocery");
       }
     }, [isLoggedIn, navigate]);
-    
+
     return <WrappedComponent {...props} />;
   };
 
-  return RequireAuth;
+  return RequireNoAuth;
 };
 
-export default AuthProtector;
+export default ReverseAuthProtector;

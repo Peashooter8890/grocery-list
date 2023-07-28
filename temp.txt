@@ -1,0 +1,1 @@
+selected.id and selected.name 
