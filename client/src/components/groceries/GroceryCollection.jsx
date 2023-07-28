@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../../utility/AuthProtector';
+import CreateNewGroceryList from '../utility/GroceryListPopUp';
 import "../../App.css";
 
 const GroceryCollection = () => {
-    const navigate = useNavigate();
     const [groceryLists, setGroceryLists] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
-
-    console.log(groceryLists);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [submitType, setSubmitType] = useState('');
 
     useEffect(() => {
-        // fetch grocery list from database on page load
         const fetchGroceryCollection = async () => {
             try {
                 const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/groceryList/getAllGroceryLists`);
@@ -27,24 +25,63 @@ const GroceryCollection = () => {
         fetchGroceryCollection();
     }, []);
 
-    const addGroceryList = async () => {
-        const id = uuidv4();
+    const groceryListInitiator = (type, id = null, name = null) => {
+        // initiate adding or renaming grocery list
+        switch (type) {
+            case 'add':
+                setModalIsOpen(true);
+            case 'rename':
+                setModalIsOpen(true);
+            default:
+                console.log('This is not supposed to happen.');
+        }
+    }
+
+    const submitHandler = (type, id, name) => {
+        // execute adding or renaming grocery list
+        switch (type) {
+            case 'add':
+                addGroceryList(name);
+            case 'rename':
+                renameGroceryList(id, name);
+            default:
+                console.log('This is not supposed to happen.');
+        }
+    }
+
+    const addGroceryList = async (name) => {
         try {
-            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/groceryList/addGroceryList`, id);
+            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/groceryList/addGroceryList`, { name });
             if (response.status === 200) {
-                setSuccessMessage('Changes were successfully saved.');
-                setGroceryLists([...groceryLists, { _id: id }]);
+                setSuccessMessage(`Successfully added grocery list "${response.data.newGroceryList.name}".`);
+                setGroceryLists([...groceryLists, response.data.newGroceryList]);
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setModalIsOpen(false);
+        }
+    };
+
+    const renameGroceryList = async (id, name) => {
+        try {
+            const response = await axiosInstance.put(`${process.env.REACT_APP_API_URL}/groceryList/renameGroceryList/${id}`, { name });
+            if (response.status === 200) {
+                setSuccessMessage(`Successfully renamed grocery list "${newGroceryListName}".`);
+                setGroceryLists(groceryLists.map((item) => item._id === id ? { ...item, name } : item));
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setModalIsOpen(false);
         }
     };
     
-    const removeGroceryList = async (id) => {
+    const removeGroceryList = async (id, name) => {
         try {
             const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/groceryList/deleteGroceryList/${id}`);
             if (response.status === 200) {
-                setSuccessMessage('Changes were successfully saved.');
+                setSuccessMessage(`Successfully removed grocery list "${name}".`);
                 setGroceryLists(groceryLists.filter((item) => item._id !== id));
             }
         } catch (error) {
@@ -67,6 +104,16 @@ const GroceryCollection = () => {
 
     return (
         <div className="grocery-list">
+            {modalIsOpen &&
+                <CreateNewGroceryList 
+                    id={selectedGroceryListId}
+                    initialName={selectedGroceryListName}
+                    modalIsOpen
+                    onSubmit={submitHandler}
+                    onBack={() => setModalIsOpen(false)}
+                    submitType
+                />
+            }
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="groceryList">
                     {(provided) => (
@@ -79,8 +126,9 @@ const GroceryCollection = () => {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         >
-                                            Grocery List {item._id}
-                                            <button onClick={() => removeGroceryList(item._id)}>Remove</button>
+                                            {item.name}
+                                            <button>Rename</button>
+                                            <button onClick={() => removeGroceryList(item._id, item.name)}>Remove</button>
                                         </li>
                                     )}
                                 </Draggable>
@@ -91,9 +139,9 @@ const GroceryCollection = () => {
                 </Droppable>
             </DragDropContext>
             <div>
-                <button onClick={addGroceryList}>Add Grocery List</button>
+                <button onClick={() => setModalIsOpen(true)}>Add Grocery List</button>
                 {successMessage !== '' && 
-                    <p>{successMessage}</p>
+                    <p style={{color:'green'}}>{successMessage}</p>
                 }
             </div>
         </div>

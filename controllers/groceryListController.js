@@ -22,16 +22,20 @@ exports.addGroceryList = async (req, res, next) => {
             // if groceryCollection does not exist for user, create a new one.
             groceryCollection = new GroceryCollection({ userId: req.user.id });
         }
-        groceryCollection.groceryLists.push({ items: [] }); 
+        const newGroceryList = { name: req.body.name, items: [] };
+        groceryCollection.groceryLists.push(newGroceryList);
         await groceryCollection.save();
-        res.status(200).json({message: "Grocery list added succesfully." });
+
+        const addedGroceryList = groceryCollection.groceryLists[groceryCollection.groceryLists.length - 1];
+
+        res.status(200).json({ message: "Grocery list added successfully.", newGroceryList: addedGroceryList });
     } catch (error) {
         if (!error.message) {
             error.message = "Something went wrong with adding grocery list.";
         }
         next(error);
     }
-}
+};
 
 exports.deleteGroceryList = async (req, res, next) => {
     try {

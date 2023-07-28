@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const authUtils = require('../utility/authUtils');
 const authMiddleware = require('../middleware/authMiddleware');
 const validator = require('validator');
@@ -11,7 +12,8 @@ exports.signup = async (req, res, next) => {
         if (!validator.isEmail(email)) {
             throw new Error('Please provide a valid email format.');
         }
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        console.log(password);
         if (!passwordRegex.test(password)) {
             throw new Error('Password should be at least 8 characters long and should contain at least one number and letter.');
         }
@@ -81,7 +83,7 @@ exports.changeUsername = async (req, res, next) => {
         const user = await User.findById(userId);
         user.username = newUsername;
         await user.save();
-        res.status(200).json({ message: 'Username changed successfully', user });
+        res.status(200).json({ message: 'Username changed successfully' });
     } catch (err) {
         next(err);
     }
@@ -90,11 +92,18 @@ exports.changeUsername = async (req, res, next) => {
 exports.changeEmail = async (req, res, next) => {
     const { userId, newEmail } = req.body;
     try {
-        authUtils.validateInput({ userId, newEmail });
+        authUtils.validateInput({ newEmail });
         const user = await User.findById(userId);
-        user.email = newEmail;
+        if (!user) {
+            throw new Error("No user found.");
+        }
+        if (!(user.email === newEmail)) {
+            user.email = newEmail;
+        } else {
+            throw new Error("Newly provided email is the same as the old one.")
+        }
         await user.save();
-        res.status(200).json({ message: 'Email changed successfully', user });
+        res.status(200).json({ message: 'Email changed successfully' });
     } catch (err) {
         next(err);
     }
@@ -103,8 +112,11 @@ exports.changeEmail = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
     const { userId, oldPassword, newPassword } = req.body;
     try {
-        authUtils.validateInput({ userId, oldPassword, newPassword });
+        authUtils.validateInput({ oldPassword, newPassword });
         const user = await User.findById(userId);
+        if (!user) {
+            throw new Error('No user found.');
+        }
         const isEqual = await bcrypt.compare(oldPassword, user.password);
         if (!isEqual) {
             throw new Error('Old password is incorrect.');
@@ -126,7 +138,6 @@ exports.changePassword = async (req, res, next) => {
 exports.deleteAccount = async (req, res, next) => {
     const { userId } = req.body;
     try {
-        authUtils.validateInput({ userId });
         const user = await User.findById(userId);
         logout();
         await user.remove();
@@ -137,21 +148,22 @@ exports.deleteAccount = async (req, res, next) => {
 };
 
 exports.refreshTokens = async (req, res, next) => {
-    const { userId, refreshToken } = req.body;
+    console.log(req.body);
+    const { refreshToken } = req.body;
     try {
-        authUtils.validateInput({ userId, refreshToken });
         if (!refreshToken) {
             throw new Error('No refresh token provided.');
         }
-        if (!userId) {
-            throw new Error('No user ID provided.');
-        }
         let decodedToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+        const userId = decodedToken.userId;
+        if (!userId) {
+            throw new Error('No user id provided.');
+        }
         if (!decodedToken || (decodedToken.userId !== userId)) {
             throw new Error('Invalid refresh token.');
         }
         const user = await User.findById(userId);
-        const newTokens = createTokens(user);
+        const newTokens = authUtils.createTokens(user);
         authUtils.sendCookies(res, newTokens);
         res.status(200).json({ message: 'Successfully refreshed token.' });
     } catch (err) {

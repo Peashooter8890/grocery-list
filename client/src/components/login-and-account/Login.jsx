@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axiosInstance from '../../axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginStatus } from '../../features/AuthSlice';
-import PopupWindow from "../utility/PopupWindow";
+import CookieWarningWindow from "../utility/CookieWarningWindow";
 import ReverseAuthProtector from "../../utility/ReverseAuthProtector";
 import '../../App.css';
 
@@ -60,12 +60,7 @@ const Login = () => {
 
     return (
         <div className="login">
-            <PopupWindow 
-                title="FRESHLY BAKED NON-SHADY COOKIES. They are here. NOW." 
-                message="Our server baked some hot FRESHLY BAKED NON-SHADY COOKIES. Please enable our FRESHLY BAKED NON-SHADY COOKIES in your browser so that your browser can taste our FRESHLY BAKED NON-SHADY COOKIES. 
-                If you do not give your browser our FRESHLY BAKED NON-SHADY COOKIES, it will come back with a bloody vengeance by ceasing to store your login information. If you value convenience over false assumptions 
-                (such as the assumption that we are using shady cookies to enforce menace onto you, which we clearly aren't, because we don't know any buyers right now who would buy your personal information), please enable cookies so that we can spread our FRESHLY BAKED NON-SHADY COOKIES onto the world. Thank you."
-            />
+            <CookieWarningWindow/>
             <form onSubmit={handleLogin}>
                 <section>
                     <label>Email</label>

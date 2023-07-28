@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const GroceryCollection = require('../models/GroceryCollection');
 
+const accessTokenMaxAge = ms('15m');
+const refreshTokenMaxAge = ms('7d');
+
 const createGroceryCollection = async (user) => {
     const newGroceryCollection = new GroceryCollection({
         userId: user._id,
@@ -22,18 +25,16 @@ const validateInput = (input) => {
 }  
 
 const sendCookies = (res, tokens) => {
-    const accessTokenMaxAge = ms('15m');
-    const refreshTokenMaxAge = ms('7d');
     res.cookie('accessToken', tokens.accessToken, { httpOnly: true, secure: true, maxAge: accessTokenMaxAge });
     res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true, secure: true, maxAge: refreshTokenMaxAge });
 };
 
 const createTokens = (user) => {
-    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-        expiresIn: '15m',
+    const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: accessTokenMaxAge,
     });
-    const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, {
-        expiresIn: '7d',
+    const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: refreshTokenMaxAge,
     });
     return { accessToken, refreshToken };
 };
@@ -54,5 +55,5 @@ module.exports = {
     validateInput,
     sendCookies,
     createTokens,
-    passwordHasher
+    passwordHasher,
 }

@@ -11,6 +11,10 @@ const GroceryItemSchema = new mongoose.Schema({
 });
 
 const GroceryListSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        default: ''
+    },
     items: [GroceryItemSchema],
     creationDate: {
         type: Date,
@@ -26,6 +30,6 @@ const GroceryCollectionSchema = new mongoose.Schema({
     groceryLists: [GroceryListSchema],
 });
 
-const GroceryCollection = mongoose.model("GroceryCollection", GroceryCollectionSchema, 'grocery-collections');
+const GroceryCollection = mongoose.model("GroceryCollection", GroceryCollectionSchema, 'groceryCollections');
 
 module.exports = GroceryCollection;
