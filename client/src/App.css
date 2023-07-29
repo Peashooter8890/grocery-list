@@ -44,3 +44,12 @@
     display: flex;
     flex-direction: column;
 }
+
+.row-flex {
+    display: flex;
+}
+
+.hover-button:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}

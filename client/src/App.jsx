@@ -39,10 +39,10 @@ function App() {
   return (
     <BrowserRouter> 
       <Routes>
-        <Route exact path="/" element={isLoggedIn ? <Navigate to="/grocery" /> : <Navigate to="/login" />} />  c
+        <Route exact path="/" element={isLoggedIn ? <Navigate to="/groceryCollection" /> : <Navigate to="/login" />} />  c
         <Route path='/login' element={<Login/>} />
-        <Route path='/grocery' element={<GroceryCollection/>} />
-        <Route path='/grocerylist' element={<GroceryList/>} />
+        <Route path='/groceryCollection' element={<GroceryCollection/>} />
+        <Route path='/grocerylist/:id' element={<GroceryList/>} />
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </BrowserRouter> 

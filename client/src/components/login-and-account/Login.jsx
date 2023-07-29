@@ -3,7 +3,7 @@ import axiosInstance from '../../axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginStatus } from '../../features/AuthSlice';
 import CookieWarningWindow from "../utility/CookieWarningWindow";
-import ReverseAuthProtector from "../../utility/ReverseAuthProtector";
+import ReverseAuthProtector from "../utility/ReverseAuthProtector";
 import '../../App.css';
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
         e.preventDefault();
         setErrorMessage(null);
         try {
-            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
+            await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
                 username,
                 email: signupEmail, 
                 password: signupPassword,

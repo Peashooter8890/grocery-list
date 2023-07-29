@@ -41,7 +41,6 @@ exports.renameGroceryList = async (req, res, next) => {
     try {
         const { id } = req.params; 
         const { name } = req.body; 
-
         let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
         if (!groceryCollection) {
             throw new Error("No grocery collection found for this user."); 
@@ -52,7 +51,6 @@ exports.renameGroceryList = async (req, res, next) => {
         }
         groceryList.name = name;
         await groceryCollection.save();
-
         res.status(200).json({ message: "Grocery list renamed successfully.", newGroceryList: groceryList });
     } catch (error) {
         if (!error.message) {
@@ -61,6 +59,50 @@ exports.renameGroceryList = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.getGroceryList = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
+        if (!groceryCollection) {
+            throw new Error("No grocery collection was found for the user.");
+        }
+        const list = groceryCollection.groceryLists.id(id);
+        if (!list) {
+            throw new Error("No grocery list of the provided ID was found.");
+        }
+        res.status(200).json(list.items);
+    } catch (error) {
+        if (!error.message) {
+            error.message = "Something went wrong with fetching grocery list items.";
+        }
+        next(error);
+    }
+}
+
+exports.updateGroceryList = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const { items } = req.body;
+
+        let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
+        if (!groceryCollection) {
+            throw new Error("No grocery collection was found for the user.");
+        }
+        const list = groceryCollection.groceryLists.id(id);
+        if (!list) {
+            throw new Error("No grocery list of the provided id was found.");
+        }
+        list.items = items;
+        await groceryCollection.save();
+        res.status(200).json(list);
+    } catch (error) {
+        if (!error.message) {
+            error.message = "Something went wrong with updating grocery list.";
+        }
+        next(error);
+    }
+}
 
 exports.deleteGroceryList = async (req, res, next) => {
     try {
@@ -81,50 +123,6 @@ exports.deleteGroceryList = async (req, res, next) => {
     } catch (error) {
         if (!error.message) {
             error.message = "Something went wrong with deleting grocery list.";
-        }
-        next(error);
-    }
-}
-
-exports.getGroceryListItems = async (req, res, next) => {
-    try {
-        const listId = req.params.id;
-        let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
-        if (!groceryCollection) {
-            // if groceryCollection does not exist for user, create a new one.
-            groceryCollection = new GroceryCollection({ userId: req.user.id });
-        }
-        const list = groceryCollection.groceryLists.id(listId);
-        if (!list) {
-            throw new Error("No grocery list of the provided ID was found.");
-        }
-        res.status(200).json(list.items);
-    } catch (error) {
-        if (!error.message) {
-            error.message = "Something went wrong with fetching grocery list items.";
-        }
-        next(error);
-    }
-}
-
-exports.setGroceryList = async (req, res, next) => {
-    try {
-        const listId = req.params.id;
-        const items = req.body;
-        let groceryCollection = await GroceryCollection.findOne({ userId: req.user.id });
-        if (!groceryCollection) {
-            groceryCollection = new GroceryCollection({ userId: req.user.id });
-        }
-        const list = groceryCollection.groceryLists.id(listId);
-        if (!list) {
-            throw new Error("No grocery list of the provided ID was found.");
-        }
-        list.items = items;
-        await groceryCollection.save();
-        res.status(200).json(list);
-    } catch (error) {
-        if (!error.message) {
-            error.message = "Something went wrong with updating grocery list.";
         }
         next(error);
     }
