@@ -1,27 +1,53 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const emailValidator = require('validator');
+const passwordValidator = require('password-validator');
 const authUtils = require('../utility/authUtils');
-const authMiddleware = require('../middleware/authMiddleware');
-const validator = require('validator');
 const User = require('../models/User');
 
 exports.signup = async (req, res, next) => {
     const { username, email, password } = req.body;
     try {
         authUtils.validateInput({ username, email, password });
-        if (!validator.isEmail(email)) {
+        if (!emailValidator.isEmail(email)) {
             throw new Error('Please provide a valid email format.');
         }
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            throw new Error('Password should be at least 8 characters long and should contain at least one number and letter.');
-        }
+        let schema = new passwordValidator();
+        schema
+        .is().min(8)
+        .is().max(100)
+        .has().letters()
+        .has().digits()
+        .has().not().spaces();
+
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
         if (existingUser) {
             const conflict = existingUser.username === username ? 'username' : 'email';
             throw new Error(`There is already an account associated with that ${conflict}.`);
         }
 
+        let validationErrors = schema.validate(password, { list: true });
+        if (validationErrors.length > 0) {
+            let firstError = validationErrors[0];
+            switch (firstError) {
+                case 'min':
+                    throw new Error('Your password should be at least 8 characters long.');
+                case 'max':
+                    throw new Error('Your password should not exceed 100 characters.');
+                case 'uppercase':
+                    throw new Error('Your password should contain at least one uppercase letter.');
+                case 'lowercase':
+                    throw new Error('Your password should contain at least one lowercase letter.');
+                case 'digits':
+                    throw new Error('Your password should contain at least one digit.');
+                case 'spaces':
+                    throw new Error('Your password should not contain spaces.');
+                case 'oneOf':
+                    throw new Error('Your password should not be one of the common passwords.');
+                default:
+                    throw new Error('Your password might have a character that\'s not allowed.');
+            }
+        };
         const hashedPassword = await new Promise((resolve, reject) => {
             authUtils.passwordHasher(password, (err, hashedPassword) => {
                 if (err) {
@@ -31,7 +57,6 @@ exports.signup = async (req, res, next) => {
                 }
             });
         });
-
         const newUser = new User({
             username,
             email,
