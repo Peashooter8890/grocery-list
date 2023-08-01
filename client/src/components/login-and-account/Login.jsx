@@ -15,7 +15,6 @@ const Login = () => {
     const [signupPassword, setSignupPassword] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -27,7 +26,6 @@ const Login = () => {
                 password: signupPassword,
             });
             dispatch(setLoginStatus(true));
-            setSuccessMessage('Succesfully created account.');
         } catch (err) {
             dispatch(setLoginStatus(false));
             if (err.response) {
@@ -42,12 +40,11 @@ const Login = () => {
         e.preventDefault();
         setErrorMessage(null);
         try {
-            const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/login`, { 
+            await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/login`, { 
                 email: loginEmail,
                 password: loginPassword,
             });
             dispatch(setLoginStatus(true));
-            setSuccessMessage('Succesfully logged into account.');
         } catch (err) {
             dispatch(setLoginStatus(false));
             if (err.response) {
@@ -59,12 +56,13 @@ const Login = () => {
     };
 
     return (
-        <div className="login">
+        <div className="flex flex-col justify-between items-center h-screen">
             <CookieWarningWindow/>
-            <form onSubmit={handleLogin}>
-                <section>
+            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleLogin}>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Email</label>
                     <input 
+                        className="h-8 w-48"
                         value={loginEmail} 
                         onChange={(e) => setLoginEmail(e.target.value)} 
                         type="text" 
@@ -74,9 +72,10 @@ const Login = () => {
                     />
                 </section>
 
-                <section>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Password</label>
                     <input 
+                        className="h-8 w-48"
                         value={loginPassword} 
                         onChange={(e) => setLoginPassword(e.target.value)} 
                         type="password" 
@@ -86,14 +85,15 @@ const Login = () => {
                     />
                 </section>
 
-                <section>
-                    <button type="submit">Log In</button>
+                <section className="w-[12.5rem]">
+                    <button className="h-8 w-20 border-2 border-gray-200 bg-white hover:bg-gray-200 text-black" type="submit">Log In</button>
                 </section>
             </form>
-            <form className="register" onSubmit={handleSignUp}>
-                <section>
+            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleSignUp}>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Name</label>
                     <input 
+                        className="h-8 w-48"
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
                         type="text" 
@@ -103,9 +103,10 @@ const Login = () => {
                     />
                 </section>
                 
-                <section>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Email</label>
                     <input 
+                        className="h-8 w-48"
                         value={signupEmail} 
                         onChange={(e) => setSignupEmail(e.target.value)} 
                         type="text" 
@@ -115,9 +116,10 @@ const Login = () => {
                     />
                 </section>
                 
-                <section>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Password</label>
                     <input 
+                        className="h-8 w-48"
                         value={signupPassword} 
                         onChange={(e) => setSignupPassword(e.target.value)} 
                         type="password" 
@@ -126,20 +128,17 @@ const Login = () => {
                         required
                     />
                 </section>
-                
-                <section>
-                    <button type="submit">Sign Up</button>
+                <section className="w-[12.5rem]">
+                    <button className="h-8 w-20 border-2 border-gray-200 bg-white hover:bg-gray-200 text-black" type="submit">Sign Up</button>
                 </section>
             </form>
-
-            <span style={{color: "green"}}>{successMessage && <div className="successMessage">{successMessage}</div>}</span>
-            <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
             {isLoggedIn 
                 ? 
                 <span style={{color:"green"}}>You are logged in</span>
                 : 
                 <span style={{color:"red"}}>You are logged out</span>
             }
+            <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
         </div>
     );
 };
