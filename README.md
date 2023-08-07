@@ -1,2 +1,2 @@
 # grocery-list
-A grocery list web application undergoing development by Eugene and Mark.
+A grocery list web application undergoing development by Eugene, Jin, and Mark.
