@@ -114,7 +114,7 @@ const GroceryCollection = () => {
     };
 
     return (
-        <div className="grocery-list">
+        <div className="h-full bg-lime-900">
             {modalIsOpen &&
                 <CreateNewGroceryList
                     id={selected.id}
@@ -155,7 +155,7 @@ const GroceryCollection = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            <div className="column-flex">
+            <div className="flex flex-col">
                 <button onClick={() => setModalIsOpen(true)}>Add Grocery List</button>
                 <button onClick={logout}>Logout</button>
                 {errorMessage !== '' && 

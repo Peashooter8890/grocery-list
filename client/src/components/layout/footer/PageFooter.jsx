@@ -2,7 +2,7 @@ import React from 'react';
 
 const PageFooter = () => {
   return (
-    <footer className="h-1/6 bg-blue-500 block">
+    <footer className="h-[12.5%] bg-sky-800 block">
     </footer>
   );
 };

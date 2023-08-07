@@ -74,43 +74,47 @@ const GroceryList = () => {
     }
 
     return (
-        <div className="grocery-list">
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="list">
-                    {(provided) => (
-                        <ul {...provided.droppableProps} ref={provided.innerRef}>
-                            {items && (items.length > 0) && items.map((item, index) => (
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided) => (
-                                        <li
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                        >
-                                            {item.name}
-                                            <button onClick={() => renameItem(item.id)}>Rename</button>
-                                            <button onClick={() => removeItem(item.id)}>Remove</button>
-                                        </li>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </ul>
-                    )}
-                </Droppable>
-            </DragDropContext>
-            <div className="column-flex">
+        <div className="h-full bg-lime-900">
+            <div className="h-[12.5%] border-2 block"></div>
+            <div className="h-[75%] border-2 block">
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="list">
+                        {(provided) => (
+                            <ul {...provided.droppableProps} ref={provided.innerRef}>
+                                {items && (items.length > 0) && items.map((item, index) => (
+                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                        {(provided) => (
+                                            <li
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                {item.name}
+                                                <input type="checkbox"/>
+                                                <button onClick={() => renameItem(item.id)}>Rename</button>
+                                                <button onClick={() => removeItem(item.id)}>Remove</button>
+                                            </li>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </ul>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+            <div className="border-2 h-[12.5%] flex flex-col">
                 {!isAddingItem &&
                     <button onClick={() => setIsAddingItem(true)}>Add Item</button>
                 }
                 {isAddingItem && 
-                    <div className="row-flex">
+                    <div className="flex">
                         <input 
                             type="text" 
                             value={newItemName}
                             onChange={e => setNewItemName(e.target.value)}
                         />
-                        <button onClick={() => addItem(newItemName)}>Add</button>
+                        <button onClick={() => addItem(newItemName)}>Add New</button>
                         <button onClick={cancel}>Cancel</button>
                     </div>
                 }
