@@ -11,6 +11,10 @@ const GroceryList = () => {
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
     const [isAddingItem, setIsAddingItem] = useState(false);
+    const [editingItem, setEditingItem] = useState({
+        id: null,
+        name: null
+    });
     const [newItemName, setNewItemName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,7 +39,26 @@ const GroceryList = () => {
         } catch (err) {
             console.error(err);
             setErrorMessage(err.response.data.message);
-        }
+        };
+    };
+
+    const renameItem = async (id, name) => {
+        try {
+            const modifiedItems = items.map((item) => item.id === id ? { ...item, name } : item);
+            await updateItems(modifiedItems);
+            setItems(modifiedItems);
+            finishEditingItem();
+        } catch (err) {
+            console.error(err);
+            setErrorMessage(err.response.data.message);
+        };
+    };
+
+    const finishEditingItem = () => {
+        setEditingItem({
+            id: null,
+            name: null
+        });
     };
 
     const addItem = (name) => {
@@ -44,16 +67,7 @@ const GroceryList = () => {
         updateItems(newItems);
         setNewItemName('');
         cancel();
-    }
-
-    const renameItem = (id, newName) => {
-        const newItems = items.map((item) =>
-          item.id === id ? { ...item, name: newName } : item
-        );
-        setItems(newItems);
-        updateItems(newItems);
-        setNewItemName('');
-      };
+    };
 
     const removeItem = (id) => {
         console.log("before: ", items);
@@ -75,30 +89,61 @@ const GroceryList = () => {
 
     return (
         <div className="h-full bg-lime-900">
-            <div className="h-[12.5%] border-2 block"></div>
+            <div className="h-[12.5%] border-2 block">
+                {/* this space might or might not be needed to fit the design */}
+            </div>
             <div className="h-[75%] border-2 block">
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable droppableId="list">
                         {(provided) => (
-                            <ul {...provided.droppableProps} ref={provided.innerRef}>
+                            <div className="flex flex-col gap-2" {...provided.droppableProps} ref={provided.innerRef}>
                                 {items && (items.length > 0) && items.map((item, index) => (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided) => (
-                                            <li
+                                            <div 
+                                                className="border-2 flex items-center gap-2"
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                {item.name}
+                                                {editingItem.id === item.id ? (
+                                                    <input 
+                                                        type="text" 
+                                                        value={editingItem.name} 
+                                                        onChange={(e) => setEditingItem({
+                                                            ...editingItem,
+                                                            name: e.target.value
+                                                        })} 
+                                                    />
+                                                ) : (
+                                                    item.name
+                                                )}
                                                 <input type="checkbox"/>
-                                                <button onClick={() => renameItem(item.id)}>Rename</button>
-                                                <button onClick={() => removeItem(item.id)}>Remove</button>
-                                            </li>
+                                                {!(editingItem.id === item.id)
+                                                    ?
+                                                    <button onClick={() => setEditingItem({
+                                                        id: item.id,
+                                                        name: item.name
+                                                    })}>
+                                                        Rename
+                                                    </button>
+                                                    :
+                                                    <button onClick={() => {renameItem(editingItem.id, editingItem.name)}}>Submit</button>
+                                                }
+                                                {!(editingItem.id === item.id)
+                                                    ?
+                                                    <button onClick={() => removeItem(item.id)}>Remove</button>
+                                                    :
+                                                    <button onClick={finishEditingItem}>
+                                                        Cancel
+                                                    </button>
+                                                }     
+                                            </div>
                                         )}
                                     </Draggable>
                                 ))}
                                 {provided.placeholder}
-                            </ul>
+                            </div>
                         )}
                     </Droppable>
                 </DragDropContext>

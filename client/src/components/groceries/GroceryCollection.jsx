@@ -88,17 +88,7 @@ const GroceryCollection = () => {
             console.error(err);
             setErrorMessage(err.response.data.message);
         }
-    }; 
-
-    const logout = async () => {
-        try {
-            const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/user/logout`);
-            window.location.reload();
-        } catch (err) {
-            console.error(err);
-            setErrorMessage(err.response.data.message);
-        }
-    }
+    };
 
     const handleDragEnd = (result) => {
         // make item return to original position if it was dropped outside of list
@@ -114,7 +104,7 @@ const GroceryCollection = () => {
     };
 
     return (
-        <div className="h-full bg-lime-900">
+        <div className="h-full flex flex-col justify-between bg-lime-900">
             {modalIsOpen &&
                 <CreateNewGroceryList
                     id={selected.id}
@@ -124,40 +114,42 @@ const GroceryCollection = () => {
                     onBack={() => setModalIsOpen(false)}
                 />
             }
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="groceryList">
-                    {(provided) => (
-                        <ul {...provided.droppableProps} ref={provided.innerRef}>
-                            {groceryLists.map((item, index) => (
-                                <Draggable key={item._id} draggableId={item._id} index={index}>
-                                    {(provided) => (
-                                        <li
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                        >
-                                            <div className="hover-button" onClick={() => navigate(`/grocerylist/${item._id}`)}>
-                                                {item.name}
+            <div>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="groceryList">
+                        {(provided) => (
+                            <div className="flex flex-col gap-2" {...provided.droppableProps} ref={provided.innerRef}>
+                                {groceryLists.map((item, index) => (
+                                    <Draggable key={item._id} draggableId={item._id} index={index}>
+                                        {(provided) => (
+                                            <div
+                                                className="flex gap-2 border-2 border-gray-950"
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                <div className="hover-button text-4xl" onClick={() => navigate(`/grocerylist/${item._id}`)}>
+                                                    {item.name}
+                                                </div>
+                                                <button onClick={() => setSelected({
+                                                    id: item._id,
+                                                    name: item.name
+                                                })}>
+                                                    Rename
+                                                </button>
+                                                <button onClick={() => removeGroceryList(item._id, item.name)}>Remove</button>
                                             </div>
-                                            <button onClick={() => setSelected({
-                                                id: item._id,
-                                                name: item.name
-                                            })}>
-                                                Rename
-                                            </button>
-                                            <button onClick={() => removeGroceryList(item._id, item.name)}>Remove</button>
-                                        </li>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </ul>
-                    )}
-                </Droppable>
-            </DragDropContext>
-            <div className="flex flex-col">
-                <button onClick={() => setModalIsOpen(true)}>Add Grocery List</button>
-                <button onClick={logout}>Logout</button>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+            <div className="flex flex-col w-full flex items-center">
+                <button className="border-2 border-gray-950 text-2xl w-64" onClick={() => setModalIsOpen(true)}>Add Grocery List</button>
                 {errorMessage !== '' && 
                     <p style={{color:'red'}}>{errorMessage}</p>
                 }
