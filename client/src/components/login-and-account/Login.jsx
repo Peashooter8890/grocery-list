@@ -10,41 +10,18 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const [username, setUsername] = useState('');
-    const [signupEmail, setSignupEmail] = useState('');
-    const [loginEmail, setLoginEmail] = useState('');
-    const [signupPassword, setSignupPassword] = useState('');
-    const [loginPassword, setLoginPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
-
-    const handleSignUp = async (e) => {
-        e.preventDefault();
-        setErrorMessage(null);
-        try {
-            await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
-                username,
-                email: signupEmail, 
-                password: signupPassword,
-            });
-            dispatch(setLoginStatus(true));
-        } catch (err) {
-            dispatch(setLoginStatus(false));
-            if (err.response) {
-                setErrorMessage(err.response.data.message);
-            } else {
-                setErrorMessage('An error occurred.');
-            }
-        }
-    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setErrorMessage(null);
         try {
             await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/login`, { 
-                email: loginEmail,
-                password: loginPassword,
+                email: email,
+                password: password,
             });
             dispatch(setLoginStatus(true));
         } catch (err) {
@@ -65,8 +42,8 @@ const Login = () => {
                     <label>Email</label>
                     <input 
                         className="h-8 w-48"
-                        value={loginEmail} 
-                        onChange={(e) => setLoginEmail(e.target.value)} 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
                         type="text" 
                         placeholder="email" 
                         name="email" 
@@ -78,8 +55,8 @@ const Login = () => {
                     <label>Password</label>
                     <input 
                         className="h-8 w-48"
-                        value={loginPassword} 
-                        onChange={(e) => setLoginPassword(e.target.value)} 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
                         type="password" 
                         placeholder="password" 
                         name="password" 
@@ -96,11 +73,11 @@ const Login = () => {
 
             {isLoggedIn 
                 ? 
-                <span style={{color:"green"}}>You are logged in</span>
+                <span className="text-green-500">You are logged in</span>
                 : 
-                <span style={{color:"red"}}>You are logged out</span>
+                <span className="text-red-500">You are logged out</span>
             }
-            <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
+            <span className="text-red-500">{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
         </div>
     );
 };
