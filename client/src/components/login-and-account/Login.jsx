@@ -62,9 +62,9 @@ const Login = () => {
             <CookieWarningWindow/>
             <form className="flex flex-col gap-1.5 items-center border-2 border-loginbordergreen bg-logingreen rounded-md w-96 h-[30rem]" onSubmit={handleLogin}>
                 
-                <h1 className="text-4xl mt-10">Log In</h1>
+                <h1 className="text-4xl mt-12">Log In</h1>
 
-                <section className="flex flex-col items-left mt-7 w-[16.5rem]">
+                <section className="flex flex-col items-left mt-8 w-[16.5rem]">
                     <label>Username or Email:</label>
                     <input 
                         className="h-8 rounded"
@@ -91,12 +91,15 @@ const Login = () => {
                     />
                 </section>
 
-                <section className="flex justify-center w-[12.5rem] mt-6">
+                <section className="flex justify-center w-[12.5rem] mt-8">
                     <button className="h-8 w-[8rem] border-[1px] border-gray-400 bg-[#83D66E] rounded-lg hover:bg-[#68D04E] text-black" type="submit">Log In</button>
                 </section>
+
+                <div className="flex flex-col items-center mt-6 text-sm">
+                    <p>Need to create an account?</p>
+                    <NavLink to="/signup" className="hover:underline">Sign Up!</NavLink>
+                </div>
             </form>
-           
-            <button onClick={() => {navigate("/signup")}}>Need to create an account? Sign up!</button>
 
             {isLoggedIn 
                 ? 

@@ -12,7 +12,7 @@ module.exports = {
       },
       colors: {
         "headergreen": "#6EAF5E",
-        "bodygreen": "#9FCB7C",
+        "bodygreen": "#91C865",
         "borderheadergreen": "#5A8F45",
         "logingreen": "#AAE39B",
         "loginbordergreen": "#51B937"
