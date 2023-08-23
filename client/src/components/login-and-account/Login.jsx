@@ -5,7 +5,7 @@ import { setLoginStatus } from '../../features/AuthSlice';
 import CookieWarningWindow from "../utility/CookieWarningWindow";
 import ReverseAuthProtector from "../utility/ReverseAuthProtector";
 import '../../App.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -58,37 +58,41 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col justify-between items-center h-screen">
+        <div className="flex flex-col justify-between items-center bg-bodygreen">
             <CookieWarningWindow/>
-            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleLogin}>
-                <section className="gap-1.5 flex justify-right items-center pr-2">
-                    <label>Email</label>
+            <form className="flex flex-col gap-1.5 items-center border-2 border-loginbordergreen bg-logingreen rounded-md w-96 h-[30rem]" onSubmit={handleLogin}>
+                
+                <h1 className="text-4xl mt-10">Log In</h1>
+
+                <section className="flex flex-col items-left mt-7 w-[16.5rem]">
+                    <label>Username or Email:</label>
                     <input 
-                        className="h-8 w-48"
+                        className="h-8 rounded"
                         value={loginEmail} 
                         onChange={(e) => setLoginEmail(e.target.value)} 
                         type="text" 
-                        placeholder="email" 
                         name="email" 
                         required
                     />
                 </section>
 
-                <section className="gap-1.5 flex justify-right items-center pr-2">
-                    <label>Password</label>
+                <section className="flex flex-col justify-right mt-3 w-[16.5rem]">
+                    <div className="flex justify-between items-end">
+                        <label>Password:</label>
+                        <NavLink to="/forgotpassword" className="hover:underline text-xs">Forgot Password?</NavLink>
+                    </div>
                     <input 
-                        className="h-8 w-48"
+                        className="h-8 rounded"
                         value={loginPassword} 
                         onChange={(e) => setLoginPassword(e.target.value)} 
                         type="password" 
-                        placeholder="password" 
                         name="password" 
                         required
                     />
                 </section>
 
-                <section className="w-[12.5rem]">
-                    <button className="h-8 w-20 border-2 border-gray-200 bg-white hover:bg-gray-200 text-black" type="submit">Log In</button>
+                <section className="flex justify-center w-[12.5rem] mt-6">
+                    <button className="h-8 w-[8rem] border-[1px] border-gray-400 bg-[#83D66E] rounded-lg hover:bg-[#68D04E] text-black" type="submit">Log In</button>
                 </section>
             </form>
            

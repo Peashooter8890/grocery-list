@@ -6,6 +6,16 @@ module.exports = {
     extend: {
       height: {
         '1/6': '16.666667%'
+      },
+      fontFamily: {
+        "indieflower": ['"Indie Flower"', 'cursive']
+      },
+      colors: {
+        "headergreen": "#6EAF5E",
+        "bodygreen": "#9FCB7C",
+        "borderheadergreen": "#5A8F45",
+        "logingreen": "#AAE39B",
+        "loginbordergreen": "#51B937"
       }
     }
   },

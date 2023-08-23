@@ -3,9 +3,9 @@ import Header from '../layout/header/PageHeader';
 import Footer from '../layout/footer/PageFooter';
 
 const Layout = ({ children }) => (
-    <div className="flex flex-col h-screen">
+    <div>
         <Header />
-            <main className="flex-1">
+            <main>
                 {children}
             </main>
         <Footer />

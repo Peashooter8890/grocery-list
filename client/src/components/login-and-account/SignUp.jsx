@@ -58,9 +58,9 @@ const SignUp = () => {
     };
 
     return (
-        <div className="flex flex-col justify-between items-center h-screen">
+        <div className="flex flex-col justify-between items-center bg-bodygreen">
             <CookieWarningWindow/>
-            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleSignUp}>
+            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-bordergreen bg-logingreen rounded-md w-72 h-60" onSubmit={handleSignUp}>
                 <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Name</label>
                     <input 

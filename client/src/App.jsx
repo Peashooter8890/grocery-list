@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from './components/layout/Layout';
+import Layout2 from './components/layout/Layout2'
 import GroceryCollection from './components/groceries/GroceryCollection';
 import GroceryList from './components/groceries/GroceryList';
 import Login from './components/login-and-account/Login';
@@ -42,8 +43,16 @@ function App() {
     <BrowserRouter> 
       <Routes>
         <Route exact path="/" element={isLoggedIn ? <Navigate to="/groceryCollection" /> : <Navigate to="/login" />} />  c
-        <Route path='/login' element={<Login/>} />
-        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/login' element={
+          <Layout2>
+            <Login/>
+          </Layout2>
+        }/>
+        <Route path='/signup' element={
+        <Layout2>
+          <SignUp/>
+        </Layout2>
+        } />
         <Route path='/groceryCollection' element={
           <Layout>
             <GroceryCollection/>
