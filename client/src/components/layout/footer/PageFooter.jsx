@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const PageFooter = () => {
   return (
     <footer className="h-14 flex bg-headergreen justify-end items-center border-t-2 border-borderheadergreen">
-      <div className="flex gap-2 mr-2">
+      <div className="flex gap-2 md:gap-6 mr-2 md:mr-6">
         <NavLink to="/privacy" className="header-link">Privacy</NavLink>
         <NavLink to="/terms" className="header-link">Terms</NavLink>
       </div>

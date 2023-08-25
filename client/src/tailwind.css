@@ -7,5 +7,5 @@
 }
 
 .header-link {
-    @apply h-fit hover:underline text-white font-serif text-sm
+    @apply h-fit hover:underline text-white font-serif text-[.65rem] md:text-sm
 }

@@ -3,12 +3,11 @@ import Header from '../layout/header/LoginHeader';
 import Footer from '../layout/footer/PageFooter';
 
 const Layout2 = ({ children }) => (
-    <div className="flex justify-between flex-col h-screen bg-bodygreen">
+    <div className="flex flex-col h-screen bg-bodygreen">
         <Header />
-            <main>
+            <main className="flex-grow">
                 {children}
             </main>
-            <div className="flex-[.1_.1_0%]"></div>
         <Footer />
     </div>
 );
