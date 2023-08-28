@@ -6,9 +6,9 @@ import CookieWarningWindow from "../utility/CookieWarningWindow";
 import ReverseAuthProtector from "../utility/ReverseAuthProtector";
 import '../../App.css';
 import { useNavigate, NavLink } from "react-router-dom";
-import Pepper from "../svg/pepper";
-import Grapes from "../svg/grapes";
-import Apples from "../svg/apples";
+import Pepper from "../svg/pepperSVG";
+import Grapes from "../svg/grapesSVG";
+import Apples from "../svg/applesSVG";
 
 const Login = () => {
     const dispatch = useDispatch();

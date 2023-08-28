@@ -15,7 +15,9 @@ module.exports = {
         "bodygreen": "#91C865",
         "borderheadergreen": "#5A8F45",
         "logingreen": "#AAE39B",
-        "loginbordergreen": "#51B937"
+        "loginbordergreen": "#51B937",
+        "listbordergreen": "#2C690F",
+        "buttongreen": "#87D673"
       }
     }
   },
