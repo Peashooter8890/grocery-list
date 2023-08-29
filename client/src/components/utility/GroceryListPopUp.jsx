@@ -28,7 +28,7 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
         <input 
           type="text" 
           value={name}
-          onChange={e => setName(e.target.value)} // update the input value
+          onChange={e => setName(e.target.value)}
         />
         <button onClick={() => onSubmit(id, name)}>Submit</button>
         <button onClick={onBack}>Go Back</button>

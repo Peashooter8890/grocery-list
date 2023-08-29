@@ -5,8 +5,8 @@ const groceryListController = require('../controllers/groceryListController');
 router.get("/getAllGroceryLists", authMiddleware, groceryListController.getAllGroceryLists);
 router.post("/addGroceryList", authMiddleware, groceryListController.addGroceryList);
 router.put("/renameGroceryList/:id", authMiddleware, groceryListController.renameGroceryList);
+router.get("/getGroceryList/:id", authMiddleware, groceryListController.getGroceryList);
+router.put("/updateGroceryList/:id", authMiddleware, groceryListController.updateGroceryList);
 router.delete("/deleteGroceryList/:id", authMiddleware, groceryListController.deleteGroceryList);
-router.get("/getGroceryListItems/:id", authMiddleware, groceryListController.getGroceryListItems);
-router.put("/setGroceryList/:id", authMiddleware, groceryListController.setGroceryList);
 
 module.exports = router;

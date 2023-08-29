@@ -7,20 +7,22 @@ import ReverseAuthProtector from "../utility/ReverseAuthProtector";
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         setErrorMessage(null);
         try {
-            await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/login`, { 
-                email: email,
+            await axiosInstance.post(`${process.env.REACT_APP_API_URL}/user/signup`, { 
+                username,
+                email: email, 
                 password: password,
             });
             dispatch(setLoginStatus(true));
@@ -37,7 +39,20 @@ const Login = () => {
     return (
         <div className="flex flex-col justify-between items-center h-screen">
             <CookieWarningWindow/>
-            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleLogin}>
+            <form className="flex flex-col gap-1.5 justify-center items-end border-2 border-gray-900 w-72 h-60" onSubmit={handleSignUp}>
+                <section className="gap-1.5 flex justify-right items-center pr-2">
+                    <label>Name</label>
+                    <input 
+                        className="h-8 w-48"
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        type="text" 
+                        placeholder="name" 
+                        name="name" 
+                        required
+                    />
+                </section>
+                
                 <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Email</label>
                     <input 
@@ -50,7 +65,7 @@ const Login = () => {
                         required
                     />
                 </section>
-
+                
                 <section className="gap-1.5 flex justify-right items-center pr-2">
                     <label>Password</label>
                     <input 
@@ -63,13 +78,12 @@ const Login = () => {
                         required
                     />
                 </section>
-
                 <section className="w-[12.5rem]">
-                    <button className="h-8 w-20 border-2 border-gray-200 bg-white hover:bg-gray-200 text-black" type="submit">Log In</button>
+                    <button className="h-8 w-20 border-2 border-gray-200 bg-white hover:bg-gray-200 text-black" type="submit">Sign Up</button>
                 </section>
             </form>
-           
-            <button onClick={() => {navigate("/signup")}}>Need to create an account? Sign up!</button>
+
+            <button onClick={() => {navigate("/login")}}>Already created an account? Log in!</button>
 
             {isLoggedIn 
                 ? 
@@ -82,4 +96,7 @@ const Login = () => {
     );
 };
 
-export default ReverseAuthProtector(Login);
+export default ReverseAuthProtector(SignUp);
+
+
+

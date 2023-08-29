@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Layout from './components/layout/Layout';
 import GroceryCollection from './components/groceries/GroceryCollection';
 import GroceryList from './components/groceries/GroceryList';
 import Login from './components/login-and-account/Login';
+import SignUp from './components/login-and-account/SignUp';
 import { setLoginStatus, setLoadingStatus } from './features/AuthSlice';
 import axiosInstance from './axiosInstance';
 
@@ -39,10 +41,19 @@ function App() {
   return (
     <BrowserRouter> 
       <Routes>
-        <Route exact path="/" element={isLoggedIn ? <Navigate to="/grocery" /> : <Navigate to="/login" />} />  c
+        <Route exact path="/" element={isLoggedIn ? <Navigate to="/groceryCollection" /> : <Navigate to="/login" />} />  c
         <Route path='/login' element={<Login/>} />
-        <Route path='/grocery' element={<GroceryCollection/>} />
-        <Route path='/grocerylist' element={<GroceryList/>} />
+        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/groceryCollection' element={
+          <Layout>
+            <GroceryCollection/>
+          </Layout>
+        }/>
+        <Route path='/grocerylist/:id' element={
+          <Layout>
+            <GroceryList/>
+          </Layout>
+        }/>
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </BrowserRouter> 

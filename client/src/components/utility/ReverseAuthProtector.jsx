@@ -9,7 +9,7 @@ const ReverseAuthProtector = WrappedComponent => {
 
     useEffect(() => {
       if (isLoggedIn) {
-        navigate("/grocery");
+        navigate("/groceryCollection");
       }
     }, [isLoggedIn, navigate]);
 
