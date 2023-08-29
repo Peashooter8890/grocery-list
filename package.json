@@ -5,7 +5,7 @@
         "client": "npm start --prefix client",
         "tailwind": "npm tailwind:css --prefix client",
         "server": "npm start --prefix server",
-        "dev": "concurrently \"npm run client\" \"npm run tailwind\" \"npm run server\""
+        "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run tailwind\""
     },
     "dependencies": {
         "concurrently": "^8.2.1"

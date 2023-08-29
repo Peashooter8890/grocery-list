@@ -1,0 +1,17 @@
+# Use a base image
+FROM node:14
+
+# Set working directory
+WORKDIR usr/src/app
+
+# this copies both package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# copy all code in directory
+COPY . ./
+
+# Command to run the app
+CMD ["npm", "start"]
