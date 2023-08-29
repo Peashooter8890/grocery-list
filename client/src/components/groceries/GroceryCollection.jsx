@@ -108,7 +108,7 @@ const GroceryCollection = () => {
 
     return (
         <div className="h-full flex flex-col">
-            <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[2.5rem] font-semibold font-indieflower">Your Grocery Lists</h2>
+            <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[3rem] font-semibold font-indieflower">Your Grocery Lists</h2>
             {modalIsOpen &&
                 <CreateNewGroceryList
                     id={selected.id}

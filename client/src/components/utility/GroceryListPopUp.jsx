@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import CloseIcon from '../svg/closeSVG';
 Modal.setAppElement('#root');
 
 // props is an object with title and message
@@ -10,6 +11,7 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
     <div>
       <Modal 
         isOpen={modalIsOpen}
+        className="bg-popupgreen border-2 border-black rounded-lg w-[21rem] md:w-[30rem] p-[.4rem] md:p-[.63rem]"
         style={
           {
             overlay: {
@@ -25,21 +27,27 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '20rem',
-              height: '20rem',
-              color: 'red'
+              color: 'black'
             }
           }
         }
       >
-        <h2>Name of your grocery list:</h2>
-        <input 
-          type="text" 
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-        <button onClick={() => onSubmit(id, name)}>Submit</button>
-        <button onClick={onBack}>Go Back</button>
+        <div className="flex flex-col items-center">
+          <div className="flex justify-end w-full">
+            <button className="md:box-border md:border-[1px] md:border-transparent md:hover:border-gray-500 rounded md:hover:bg-logingreen" onClick={onBack}><CloseIcon /></button>
+          </div>
+          <h2 className="font-indieflower text-2xl md:text-3xl mt-2 md:mt-5 mb-4 md:mb-7">Add New Shopping List</h2>
+          <input 
+            type="text"
+            className="rounded w-10/12 font-medium h-7 md:h-10 text-sm md:text-xl"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          <div className="flex gap-6 mt-5 mb-4 md:mb-8">
+            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" onClick={() => onSubmit(id, name)}>Save</button>
+            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" onClick={onBack}>Cancel</button>
+          </div>
+        </div>
       </Modal>
     </div>
   );
