@@ -36,7 +36,7 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
           <div className="flex justify-end w-full">
             <button className="md:box-border md:border-[1px] md:border-transparent md:hover:border-gray-500 rounded md:hover:bg-logingreen" onClick={onBack}><CloseIcon /></button>
           </div>
-          <h2 className="font-indieflower text-2xl md:text-3xl mt-2 md:mt-5 mb-4 md:mb-7">Add New Shopping List</h2>
+          <h2 className="font-indieflower text-2xl md:text-4xl mt-2 md:mt-5 mb-4 md:mb-7">Add New Shopping List</h2>
           <input 
             type="text"
             className="rounded w-10/12 font-medium h-7 md:h-10 text-sm md:text-xl"

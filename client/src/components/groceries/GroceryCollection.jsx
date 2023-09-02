@@ -35,17 +35,17 @@ const GroceryCollection = () => {
         fetchGroceryCollection();
     }, []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if ((selected.id !== '') && (selected.name !== '')) {
             setModalIsOpen(true);
         }
-    },[selected]);
+    },[selected]);*/
 
     const submitHandler = (id, name) => {
         if (id==='') {
             addGroceryList(name);
         } else {
-            renameGroceryList(id,name);
+            renameGroceryList(id, name);
         }
     }
 
@@ -132,9 +132,14 @@ const GroceryCollection = () => {
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                <div className="hover-button text-xl md:text-4xl hover:font-bold hover:underline mx-2 md:mx-4 mb-1 md:mb-2 mt-2 md:mt-3" onClick={() => navigate(`/grocerylist/${item._id}`)}>
+                                                {item._id===selected.id
+                                                    ? 
+                                                    <span className="cursor-default text-xl md:text-4xl" style={{color:"green"}}>Input Placeholder</span>
+                                                    : 
+                                                    <div className="hover-button text-xl md:text-4xl hover:font-bold hover:underline mx-2 md:mx-4 mb-1 md:mb-2 mt-2 md:mt-3 cursor-pointer" onClick={() => navigate(`/grocerylist/${item._id}`)}>
                                                     {item.name}
                                                 </div>
+                                                }
                                                 <div className="flex gap-2 md:gap-4 mr-2 md:mr-4 items-center">
                                                     <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl" onClick={() => setSelected({
                                                         id: item._id,
