@@ -4,6 +4,9 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../utility/AuthProtector';
 import CreateNewGroceryList from '../utility/GroceryListPopUp';
+import Trash from '../svg/trashSVG'
+import EditIcon from '../svg/editSVG'
+import UserIcon from '../svg/usersSVG'
 import "../../App.css";
 
 const GroceryCollection = () => {
@@ -32,17 +35,17 @@ const GroceryCollection = () => {
         fetchGroceryCollection();
     }, []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if ((selected.id !== '') && (selected.name !== '')) {
             setModalIsOpen(true);
         }
-    },[selected]);
+    },[selected]);*/
 
     const submitHandler = (id, name) => {
         if (id==='') {
             addGroceryList(name);
         } else {
-            renameGroceryList(id,name);
+            renameGroceryList(id, name);
         }
     }
 
@@ -104,7 +107,8 @@ const GroceryCollection = () => {
     };
 
     return (
-        <div className="h-full flex flex-col justify-between bg-lime-900">
+        <div className="h-full flex flex-col">
+            <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[3rem] font-semibold font-indieflower">Your Grocery Lists</h2>
             {modalIsOpen &&
                 <CreateNewGroceryList
                     id={selected.id}
@@ -118,26 +122,38 @@ const GroceryCollection = () => {
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable droppableId="groceryList">
                         {(provided) => (
-                            <div className="flex flex-col gap-2" {...provided.droppableProps} ref={provided.innerRef}>
+                            <div className="flex flex-col gap-[.125rem] md:gap-1" {...provided.droppableProps} ref={provided.innerRef}>
                                 {groceryLists.map((item, index) => (
                                     <Draggable key={item._id} draggableId={item._id} index={index}>
                                         {(provided) => (
                                             <div
-                                                className="flex gap-2 border-2 border-gray-950"
+                                                className="flex mx-2 md:mx-8 gap-1 md:gap-2 border-2 font-indieflower border-listbordergreen bg-headergreen rounded-md md:rounded-lg justify-between items-center max-w-6xl"
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                <div className="hover-button text-4xl" onClick={() => navigate(`/grocerylist/${item._id}`)}>
+                                                {item._id===selected.id
+                                                    ? 
+                                                    <span className="cursor-default text-xl md:text-4xl" style={{color:"green"}}>Input Placeholder</span>
+                                                    : 
+                                                    <div className="hover-button text-xl md:text-4xl hover:font-bold hover:underline mx-2 md:mx-4 mb-1 md:mb-2 mt-2 md:mt-3 cursor-pointer" onClick={() => navigate(`/grocerylist/${item._id}`)}>
                                                     {item.name}
                                                 </div>
-                                                <button onClick={() => setSelected({
-                                                    id: item._id,
-                                                    name: item.name
-                                                })}>
-                                                    Rename
-                                                </button>
-                                                <button onClick={() => removeGroceryList(item._id, item.name)}>Remove</button>
+                                                }
+                                                <div className="flex gap-2 md:gap-4 mr-2 md:mr-4 items-center">
+                                                    <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl" onClick={() => setSelected({
+                                                        id: item._id,
+                                                        name: item.name
+                                                    })}>
+                                                        <span className="hidden md:flex">Rename</span>
+                                                        <span className="flex md:hidden"><EditIcon /></span>
+                                                    </button>
+                                                    <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl">
+                                                        <span className="hidden md:flex">Users</span>
+                                                        <span className="flex md:hidden"><UserIcon /></span>
+                                                    </button>
+                                                    <button className="md:box-border md:border-[1px] md:border-transparent md:hover:border-gray-500 rounded md:hover:bg-loginbordergreen" onClick={() => removeGroceryList(item._id, item.name)}><Trash /></button>
+                                                </div>
                                             </div>
                                         )}
                                     </Draggable>
@@ -148,8 +164,8 @@ const GroceryCollection = () => {
                     </Droppable>
                 </DragDropContext>
             </div>
-            <div className="flex flex-col w-full flex items-center">
-                <button className="border-2 border-gray-950 text-2xl w-64" onClick={() => setModalIsOpen(true)}>Add Grocery List</button>
+            <div className="flex">
+                <button className="font-indieflower border-gray-500 border-[1px] rounded-lg bg-buttongreen hover:bg-loginbordergreen h-fit text-xl md:text-2xl ml-2 md:ml-8 mt-1 mb-2 md:mb-4 pt-[.37rem] md:pt-3 md:pb-1 px-4 md:px-8" onClick={() => setModalIsOpen(true)}>Add New List</button>
                 {errorMessage !== '' && 
                     <p style={{color:'red'}}>{errorMessage}</p>
                 }
