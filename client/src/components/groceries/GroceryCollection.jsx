@@ -16,6 +16,7 @@ const GroceryCollection = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [creatingNew, setCreatingNew] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [renameName, setRenameName] = useState('');
 
     // for renaming and deleting grocery list
     const [selected, setSelected] = useState({
@@ -24,8 +25,6 @@ const GroceryCollection = () => {
         renaming: false,
         deleting: false,
     });
-
-    const [renameName, setRenameName] = useState('');
 
     useEffect(() => {
         const fetchGroceryCollection = async () => {

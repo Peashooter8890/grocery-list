@@ -664,6 +664,10 @@ select {
 .m-4 {
   margin: 1rem;
 }
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -762,6 +766,9 @@ select {
 .w-5 {
   width: 1.25rem;
 }
+.w-5\/12 {
+  width: 41.666667%;
+}
 .w-7 {
   width: 1.75rem;
 }
@@ -845,6 +852,9 @@ select {
 }
 .border-2 {
   border-width: 2px;
+}
+.border-8 {
+  border-width: 8px;
 }
 .border-\[1px\] {
   border-width: 1px;
@@ -964,14 +974,6 @@ select {
   font-size: 0.75rem;
   line-height: 1rem;
 }
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
 .font-medium {
   font-weight: 500;
 }
@@ -1000,27 +1002,6 @@ select {
   padding-right: 1rem;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
-}
-
-.header-link {
-  height: -moz-fit-content;
-  height: fit-content;
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-size: .65rem;
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.header-link:hover {
-  text-decoration-line: underline;
-}
-
-@media (min-width: 768px) {
-
-  .header-link {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
 }
 
 .hover\:bg-\[\#68D04E\]:hover {
@@ -1110,6 +1091,10 @@ select {
     margin-top: 3rem;
   }
 
+  .md\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
   .md\:mt-3 {
     margin-top: 0.75rem;
   }
@@ -1156,6 +1141,11 @@ select {
 
   .md\:h-\[34rem\] {
     height: 34rem;
+  }
+
+  .md\:h-fit {
+    height: -moz-fit-content;
+    height: fit-content;
   }
 
   .md\:max-h-48 {
@@ -1275,6 +1265,11 @@ select {
     line-height: 2rem;
   }
 
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
   .md\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
@@ -1309,11 +1304,6 @@ select {
     line-height: 1rem;
   }
 
-  .md\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-
   .md\:hover\:border-gray-500:hover {
     --tw-border-opacity: 1;
     border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -1329,4 +1319,3 @@ select {
     background-color: rgb(170 227 155 / var(--tw-bg-opacity));
   }
 }
-

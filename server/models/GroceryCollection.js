@@ -16,6 +16,23 @@ const GroceryListSchema = new mongoose.Schema({
         default: ''
     },
     items: [GroceryItemSchema],
+    permission: {
+        type: String,
+        enum: ['owner', 'editor', 'viewer'],
+        required: true
+    },
+    sharedWith: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        },
+        permission: {
+            type: String,
+            enum: ['editor', 'viewer'],
+            required: true
+        }
+    }],
     creationDate: {
         type: Date,
         default: Date.now

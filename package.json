@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "client": "npm start --prefix client",
-        "tailwind": "npm tailwind:css --prefix client",
+        "tailwind": "npm run tailwind:css --prefix client",
         "server": "npm start --prefix server",
         "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run tailwind\""
     },
