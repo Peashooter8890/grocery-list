@@ -5,6 +5,8 @@ import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../utility/AuthProtector';
 import CreateNewGroceryList from './GroceryListAddNew';
 import DeletingGroceryList from './GroceryListDeleteConfirm'
+import checkIcon from '../svg/checkmarkSVG';
+import xmarkIcon from '../svg/xmarkSVG';
 import Trash from '../svg/trashSVG'
 import EditIcon from '../svg/editSVG'
 import UserIcon from '../svg/usersSVG'
@@ -117,6 +119,8 @@ const GroceryCollection = () => {
         setGroceryLists(items);
     };
 
+    const handleFocus = (e) => e.target.select();
+
     return (
         <div className="h-full flex flex-col">
             <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[3rem] font-semibold font-indieflower">Your Grocery Lists</h2>
@@ -152,7 +156,10 @@ const GroceryCollection = () => {
                                             >
                                                 {((item._id===selected.id) && selected.renaming)
                                                     ? 
-                                                    <input type="text" className="rounded w-5/12 font-medium h-fit md:h-fit text-xl md:text-3xl mx-1 mb-1 md:mb-2 mt-1 md:mt-2" 
+                                                    <input 
+                                                        onFocus={handleFocus}
+                                                        type="text" 
+                                                        className="rounded md:w-[28rem] font-medium md:h-fit text-lg md:text-3xl mx-1 mb-1 md:mb-2 mt-1 md:mt-2" 
                                                         value={renameName} 
                                                         onChange={e => 
                                                             setRenameName(e.target.value)
@@ -165,19 +172,20 @@ const GroceryCollection = () => {
                                                 <div className="flex gap-2 md:gap-4 mr-2 md:mr-4 items-center">
                                                     {((item._id===selected.id) && selected.renaming)
                                                         ?
-                                                        <div>
-                                                            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" 
-                                                                onClick={() => renameGroceryList(selected.id, renameName)}>
-                                                                Save
+                                                        <div className="flex gap-1 md:gap-2">
+                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg" 
+                                                                onClick={() => renameGroceryList(selected.id, renameName)
+                                                            }>
+                                                                <span><checkIcon /></span>
                                                             </button>
-                                                            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" 
+                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg" 
                                                                 onClick={() => setSelected({
                                                                     ...selected,
                                                                     id: '',
                                                                     name: '',
                                                                     renaming: false
                                                                 })}>
-                                                                Cancel
+                                                                <span><xmarkIcon /></span>
                                                             </button>
                                                         </div>
                                                         :
