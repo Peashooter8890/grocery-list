@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../layout/header/PageHeader';
-import Footer from '../layout/footer/PageFooter';
+import Header from './header/Header';
+import Footer from './footer/PageFooter';
 
 const Layout = ({ children }) => (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-bodygreen">
         <Header />
-            <main className="flex-1">
+            <main className="flex-grow overflow-y-auto">
                 {children}
             </main>
         <Footer />

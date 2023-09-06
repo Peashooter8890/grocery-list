@@ -42,8 +42,16 @@ function App() {
     <BrowserRouter> 
       <Routes>
         <Route exact path="/" element={isLoggedIn ? <Navigate to="/groceryCollection" /> : <Navigate to="/login" />} />  c
-        <Route path='/login' element={<Login/>} />
-        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/login' element={
+          <Layout>
+            <Login/>
+          </Layout>
+        }/>
+        <Route path='/signup' element={
+        <Layout>
+          <SignUp/>
+        </Layout>
+        } />
         <Route path='/groceryCollection' element={
           <Layout>
             <GroceryCollection/>
