@@ -5,8 +5,8 @@ import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../utility/AuthProtector';
 import CreateNewGroceryList from './GroceryListAddNew';
 import DeletingGroceryList from './GroceryListDeleteConfirm'
-import checkIcon from '../svg/checkmarkSVG';
-import xmarkIcon from '../svg/xmarkSVG';
+import CheckIcon from '../svg/checkmarkSVG';
+import XmarkIcon from '../svg/xmarkSVG';
 import Trash from '../svg/trashSVG'
 import EditIcon from '../svg/editSVG'
 import UserIcon from '../svg/usersSVG'
@@ -149,7 +149,7 @@ const GroceryCollection = () => {
                                     <Draggable key={item._id} draggableId={item._id} index={index}>
                                         {(provided) => (
                                             <div
-                                                className="flex mx-2 md:mx-8 gap-1 md:gap-2 border-2 font-indieflower border-listbordergreen bg-headergreen rounded-md md:rounded-lg justify-between items-center max-w-6xl"
+                                                className="flex mx-2 md:mx-8 gap-1 md:gap-2 border-2 font-indieflower border-listbordergreen bg-headergreen rounded-md md:rounded-lg justify-between items-center max-w-6xl max-h-16"
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
@@ -159,7 +159,7 @@ const GroceryCollection = () => {
                                                     <input 
                                                         onFocus={handleFocus}
                                                         type="text" 
-                                                        className="rounded md:w-[28rem] font-medium md:h-fit text-lg md:text-3xl mx-1 mb-1 md:mb-2 mt-1 md:mt-2" 
+                                                        className="rounded w-[15rem] md:w-[28rem] font-light h-8 md:h-fit text-lg md:text-3xl mx-1 mb-1 mt-1" 
                                                         value={renameName} 
                                                         onChange={e => 
                                                             setRenameName(e.target.value)
@@ -172,20 +172,20 @@ const GroceryCollection = () => {
                                                 <div className="flex gap-2 md:gap-4 mr-2 md:mr-4 items-center">
                                                     {((item._id===selected.id) && selected.renaming)
                                                         ?
-                                                        <div className="flex gap-1 md:gap-2">
-                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg" 
+                                                        <div className="flex gap-2 md:gap-1">
+                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-2 rounded-lg" 
                                                                 onClick={() => renameGroceryList(selected.id, renameName)
                                                             }>
-                                                                <span><checkIcon /></span>
+                                                                <span><CheckIcon /></span>
                                                             </button>
-                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg" 
+                                                            <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-3 rounded-lg" 
                                                                 onClick={() => setSelected({
                                                                     ...selected,
                                                                     id: '',
                                                                     name: '',
                                                                     renaming: false
                                                                 })}>
-                                                                <span><xmarkIcon /></span>
+                                                                <span><XmarkIcon /></span>
                                                             </button>
                                                         </div>
                                                         :
