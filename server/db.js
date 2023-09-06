@@ -7,9 +7,9 @@ const InitiateMongoServer = async () => {
     await mongoose.connect(MONGOURI, {
       useNewUrlParser: true
     });
-    console.log('Connection to database was succesful.');
+    console.log('Connection to database was successful.');
   } catch (e) {
-    console.log('Database connection unsuccesful: ', e);
+    console.log('Database connection unsuccessful: ', e);
     throw e;
   }
 };
