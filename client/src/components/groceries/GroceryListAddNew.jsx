@@ -4,8 +4,8 @@ import CloseIcon from '../svg/closeSVG';
 Modal.setAppElement('#root');
 
 // props is an object with title and message
-function GroceryListAddNew({ id, initialName, modalIsOpen, onSubmit, onBack}) {
-  const [name, setName] = useState(initialName || '');
+function GroceryListAddNew({ modalIsOpen, onSubmit, onBack}) {
+  const [name, setName] = useState('');
 
   return (
     <div>
@@ -44,7 +44,7 @@ function GroceryListAddNew({ id, initialName, modalIsOpen, onSubmit, onBack}) {
             onChange={e => setName(e.target.value)}
           />
           <div className="flex gap-6 mt-5 mb-4 md:mb-8">
-            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" onClick={() => onSubmit(id, name)}>Save</button>
+            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" onClick={() => onSubmit(name)}>Save</button>
             <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" onClick={onBack}>Cancel</button>
           </div>
         </div>

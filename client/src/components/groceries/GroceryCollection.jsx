@@ -22,8 +22,10 @@ const GroceryCollection = () => {
         id: '',
         name: '',
         renaming: false,
-        deleting: false
+        deleting: false,
     });
+
+    const [renameName, setRenameName] = useState('');
 
     useEffect(() => {
         const fetchGroceryCollection = async () => {
@@ -40,18 +42,15 @@ const GroceryCollection = () => {
     }, []);
 
     useEffect(() => {
-        if ((selected.id !== '') && (selected.name !== '') && (selected.deleting === true)) {
+        // set rename value to be equal to its current one
+        setRenameName(selected.name);
+    }, [selected.name]);
+
+    useEffect(() => {
+        if (selected.id && selected.name && selected.deleting) {
             setDeleting(true);
         }
     },[selected]);
-
-    const submitHandler = (id, name) => {
-        if (id==='') {
-            addGroceryList(name);
-        } else {
-            renameGroceryList(id, name);
-        }
-    }
 
     const addGroceryList = async (name) => {
         try {
@@ -124,17 +123,15 @@ const GroceryCollection = () => {
             <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[3rem] font-semibold font-indieflower">Your Grocery Lists</h2>
             {creatingNew &&
                 <CreateNewGroceryList
-                    id={selected.id}
-                    initialName={selected.name}
                     modalIsOpen={creatingNew}
-                    onSubmit={submitHandler}
+                    onSubmit={addGroceryList}
                     onBack={() => setCreatingNew(false)}
                 />
             }
             {deleting &&
                 <DeletingGroceryList
                     id={selected.id}
-                    initialName={selected.name}
+                    name={selected.name}
                     modalIsOpen={deleting}
                     onSubmit={removeGroceryList}
                     onBack={() => setDeleting(false)}
@@ -154,22 +151,48 @@ const GroceryCollection = () => {
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                {item._id===selected.id
+                                                {((item._id===selected.id) && selected.renaming)
                                                     ? 
-                                                    <span className="cursor-default text-xl md:text-4xl" style={{color:"green"}}>Input Placeholder</span>
+                                                    <input type="text" className="rounded w-5/12 font-medium h-fit md:h-fit text-xl md:text-3xl mx-1 mb-1 md:mb-2 mt-1 md:mt-2" 
+                                                        value={renameName} 
+                                                        onChange={e => 
+                                                            setRenameName(e.target.value)
+                                                        }/>
                                                     : 
                                                     <div className="hover-button text-xl md:text-4xl hover:font-bold hover:underline mx-2 md:mx-4 mb-1 md:mb-2 mt-2 md:mt-3 cursor-pointer" onClick={() => navigate(`/grocerylist/${item._id}`)}>
-                                                    {item.name}
-                                                </div>
+                                                        {item.name}
+                                                    </div>
                                                 }
                                                 <div className="flex gap-2 md:gap-4 mr-2 md:mr-4 items-center">
-                                                    <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl" onClick={() => setSelected({
-                                                        id: item._id,
-                                                        name: item.name
-                                                    })}>
-                                                        <span className="hidden md:flex">Rename</span>
-                                                        <span className="flex md:hidden"><EditIcon /></span>
-                                                    </button>
+                                                    {((item._id===selected.id) && selected.renaming)
+                                                        ?
+                                                        <div>
+                                                            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" 
+                                                                onClick={() => renameGroceryList(selected.id, renameName)}>
+                                                                Save
+                                                            </button>
+                                                            <button className="border-popupbordergreen border-[1px] py-[.125rem] px-5 rounded bg-white font-medium hover:bg-logingreen text-xs md:text-base" 
+                                                                onClick={() => setSelected({
+                                                                    ...selected,
+                                                                    id: '',
+                                                                    name: '',
+                                                                    renaming: false
+                                                                })}>
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                        :
+                                                        <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl" 
+                                                            onClick={() => setSelected({
+                                                                ...selected,
+                                                                id: item._id,
+                                                                name: item.name,
+                                                                renaming: true
+                                                            })}>
+                                                            <span className="hidden md:flex">Rename</span>
+                                                            <span className="flex md:hidden"><EditIcon /></span>
+                                                        </button>
+                                                    }
                                                     <button className="md:border-gray-500 md:border-[1px] md:bg-buttongreen md:hover:bg-loginbordergreen h-fit md:pt-2 md:pb-1 md:px-4 rounded-lg md:text-xl">
                                                         <span className="hidden md:flex">Users</span>
                                                         <span className="flex md:hidden"><UserIcon /></span>
@@ -195,7 +218,10 @@ const GroceryCollection = () => {
                 </DragDropContext>
             </div>
             <div className="flex">
-                <button className="font-indieflower border-gray-500 border-[1px] rounded-lg bg-buttongreen hover:bg-loginbordergreen h-fit text-xl md:text-2xl ml-2 md:ml-8 mt-1 mb-2 md:mb-4 pt-[.37rem] md:pt-3 md:pb-1 px-4 md:px-8" onClick={() => setCreatingNew(true)}>Add New List</button>
+                <button className="font-indieflower border-gray-500 border-[1px] rounded-lg bg-buttongreen hover:bg-loginbordergreen h-fit text-xl md:text-2xl ml-2 md:ml-8 mt-1 mb-2 md:mb-4 pt-[.37rem] md:pt-3 md:pb-1 px-4 md:px-8" 
+                    onClick={() => setCreatingNew(true)}>
+                    Add New List
+                </button>
                 {errorMessage !== '' && 
                     <p style={{color:'red'}}>{errorMessage}</p>
                 }
