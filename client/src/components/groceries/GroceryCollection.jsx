@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../utility/AuthProtector';
-import CreateNewGroceryList from '../utility/GroceryListPopUp';
+import CreateNewGroceryList from './GroceryListAddNew';
+import DeletingGroceryList from './GroceryListDeleteConfirm'
 import Trash from '../svg/trashSVG'
 import EditIcon from '../svg/editSVG'
 import UserIcon from '../svg/usersSVG'
@@ -13,12 +14,15 @@ const GroceryCollection = () => {
     const navigate = useNavigate();
     const [groceryLists, setGroceryLists] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    
-    // for renaming grocery list
+    const [creatingNew, setCreatingNew] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
+    // for renaming and deleting grocery list
     const [selected, setSelected] = useState({
         id: '',
-        name: ''
+        name: '',
+        renaming: false,
+        deleting: false
     });
 
     useEffect(() => {
@@ -35,11 +39,11 @@ const GroceryCollection = () => {
         fetchGroceryCollection();
     }, []);
 
-    /*useEffect(() => {
-        if ((selected.id !== '') && (selected.name !== '')) {
-            setModalIsOpen(true);
+    useEffect(() => {
+        if ((selected.id !== '') && (selected.name !== '') && (selected.deleting === true)) {
+            setDeleting(true);
         }
-    },[selected]);*/
+    },[selected]);
 
     const submitHandler = (id, name) => {
         if (id==='') {
@@ -59,7 +63,7 @@ const GroceryCollection = () => {
             console.error(err);
             setErrorMessage(err.response.data.message);
         } finally {
-            setModalIsOpen(false);
+            setCreatingNew(false);
         }
     };
 
@@ -74,14 +78,15 @@ const GroceryCollection = () => {
             setErrorMessage(err.response.data.message);
         } finally {
             setSelected({
+                ...selected,
                 id: '',
-                name: ''
+                name: '',
+                renaming: false
             });
-            setModalIsOpen(false);
         }
     };
     
-    const removeGroceryList = async (id, name) => {
+    const removeGroceryList = async (id) => {
         try {
             const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/groceryList/deleteGroceryList/${id}`);
             if (response.status === 200) {
@@ -90,7 +95,15 @@ const GroceryCollection = () => {
         } catch (err) {
             console.error(err);
             setErrorMessage(err.response.data.message);
-        }
+        } finally {
+            setSelected({
+                ...selected,
+                id: '',
+                name: '',
+                deleting: false
+            });
+            setDeleting(false);
+        }    
     };
 
     const handleDragEnd = (result) => {
@@ -109,13 +122,22 @@ const GroceryCollection = () => {
     return (
         <div className="h-full flex flex-col">
             <h2 className="text-center m-4 md:m-8 text-[1.75rem] md:text-[3rem] font-semibold font-indieflower">Your Grocery Lists</h2>
-            {modalIsOpen &&
+            {creatingNew &&
                 <CreateNewGroceryList
                     id={selected.id}
                     initialName={selected.name}
-                    modalIsOpen
+                    modalIsOpen={creatingNew}
                     onSubmit={submitHandler}
-                    onBack={() => setModalIsOpen(false)}
+                    onBack={() => setCreatingNew(false)}
+                />
+            }
+            {deleting &&
+                <DeletingGroceryList
+                    id={selected.id}
+                    initialName={selected.name}
+                    modalIsOpen={deleting}
+                    onSubmit={removeGroceryList}
+                    onBack={() => setDeleting(false)}
                 />
             }
             <div>
@@ -152,7 +174,15 @@ const GroceryCollection = () => {
                                                         <span className="hidden md:flex">Users</span>
                                                         <span className="flex md:hidden"><UserIcon /></span>
                                                     </button>
-                                                    <button className="md:box-border md:border-[1px] md:border-transparent md:hover:border-gray-500 rounded md:hover:bg-loginbordergreen" onClick={() => removeGroceryList(item._id, item.name)}><Trash /></button>
+                                                    <button className="md:box-border md:border-[1px] md:border-transparent md:hover:border-gray-500 rounded md:hover:bg-loginbordergreen" 
+                                                        onClick={() => setSelected({
+                                                            ...selected,
+                                                            id: item._id,
+                                                            name: item.name,
+                                                            deleting: true
+                                                        })}>
+                                                        <Trash />
+                                                    </button>
                                                 </div>
                                             </div>
                                         )}
@@ -165,7 +195,7 @@ const GroceryCollection = () => {
                 </DragDropContext>
             </div>
             <div className="flex">
-                <button className="font-indieflower border-gray-500 border-[1px] rounded-lg bg-buttongreen hover:bg-loginbordergreen h-fit text-xl md:text-2xl ml-2 md:ml-8 mt-1 mb-2 md:mb-4 pt-[.37rem] md:pt-3 md:pb-1 px-4 md:px-8" onClick={() => setModalIsOpen(true)}>Add New List</button>
+                <button className="font-indieflower border-gray-500 border-[1px] rounded-lg bg-buttongreen hover:bg-loginbordergreen h-fit text-xl md:text-2xl ml-2 md:ml-8 mt-1 mb-2 md:mb-4 pt-[.37rem] md:pt-3 md:pb-1 px-4 md:px-8" onClick={() => setCreatingNew(true)}>Add New List</button>
                 {errorMessage !== '' && 
                     <p style={{color:'red'}}>{errorMessage}</p>
                 }

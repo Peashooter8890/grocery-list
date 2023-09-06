@@ -4,7 +4,7 @@ import CloseIcon from '../svg/closeSVG';
 Modal.setAppElement('#root');
 
 // props is an object with title and message
-function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
+function GroceryListAddNew({ id, initialName, modalIsOpen, onSubmit, onBack}) {
   const [name, setName] = useState(initialName || '');
 
   return (
@@ -53,4 +53,4 @@ function GroceryListPopUp({ id, initialName, modalIsOpen, onSubmit, onBack}) {
   );
 }
 
-export default GroceryListPopUp;
+export default GroceryListAddNew;
