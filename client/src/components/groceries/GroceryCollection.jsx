@@ -137,7 +137,14 @@ const GroceryCollection = () => {
                     name={selected.name}
                     modalIsOpen={deleting}
                     onSubmit={removeGroceryList}
-                    onBack={() => setDeleting(false)}
+                    onBack={() => {setDeleting(false);
+                        setSelected({
+                            ...selected,
+                            id: '',
+                            name: '',
+                            deleting: false
+                        });
+                    }}
                 />
             }
             <div>
@@ -209,7 +216,8 @@ const GroceryCollection = () => {
                                                             ...selected,
                                                             id: item._id,
                                                             name: item.name,
-                                                            deleting: true
+                                                            deleting: true,
+                                                            renaming: false
                                                         })}>
                                                         <Trash />
                                                     </button>
