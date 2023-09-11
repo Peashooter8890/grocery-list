@@ -126,12 +126,6 @@ const SignUp = () => {
 
             <div className="flex-[.5_.5_0%]"></div>
 
-            {isLoggedIn 
-                ? 
-                <span className="cursor-default text-xs md:text-sm" style={{color:"green"}}>You are logged in</span>
-                : 
-                <span className="cursor-default text-xs md:text-sm" style={{color:"red"}}>You are logged out</span>
-            }
             <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
         </div>
     );

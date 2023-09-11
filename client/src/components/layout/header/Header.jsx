@@ -16,7 +16,7 @@ const Header = () => {
   }
 
     return (
-      <header className="h-14 md:h-28 bg-headergreen flex justify-between border-b-[1px] md:border-b-2 border-borderheadergreen">
+      <header className="h-14 md:h-28 bg-headergreen flex justify-between border-b-[1px] md:border-b-2 border-borderheadergreen z-10">
         <div className="flex h-full items-center">
           <a href="/" className="flex whitespace-nowrap items-center font-indieflower ml-2 md:ml-6 text-2xl md:text-5xl text-white h-fit">
               <Icon />

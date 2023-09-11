@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoginStatus } from '../../features/AuthSlice';
 import CookieWarningWindow from "../utility/CookieWarningWindow";
 import ReverseAuthProtector from "../utility/ReverseAuthProtector";
-import '../../App.css';
 import { useNavigate, NavLink } from "react-router-dom";
 import Pepper from "../svg/pepperSVG";
 import Grapes from "../svg/grapesSVG";
@@ -116,12 +115,6 @@ const Login = () => {
 
             <div className="flex-[.5_.5_0%]"></div>
 
-            {isLoggedIn 
-                ? 
-                <span className="cursor-default text-xs md:text-sm" style={{color:"green"}}>You are logged in</span>
-                : 
-                <span className="cursor-default text-xs md:text-sm" style={{color:"red"}}>You are logged out</span>
-            }
             <span style={{color: "red"}}>{errorMessage && <div className="errorMessage">{errorMessage}</div>}</span>
         </div>
     );
