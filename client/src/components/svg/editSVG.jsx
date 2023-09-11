@@ -5,7 +5,7 @@ function EditIcon() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      className="w-5"
+      className="w-5 md:w-8"
       fill="none"
       viewBox="0 0 19 19"
     >

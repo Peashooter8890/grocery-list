@@ -48,9 +48,9 @@ function App() {
           </Layout>
         }/>
         <Route path='/signup' element={
-        <Layout>
-          <SignUp/>
-        </Layout>
+          <Layout>
+            <SignUp/>
+          </Layout>
         } />
         <Route path='/groceryCollection' element={
           <Layout>

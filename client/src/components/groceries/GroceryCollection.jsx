@@ -4,12 +4,12 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axiosInstance from '../../axiosInstance';
 import AuthProtector from '../utility/AuthProtector';
 import CreateNewGroceryList from './GroceryListAddNew';
-import DeletingGroceryList from './GroceryListDeleteConfirm'
+import DeletingGroceryList from './GroceryListDeleteConfirm';
 import CheckIcon from '../svg/checkmarkSVG';
 import XmarkIcon from '../svg/xmarkSVG';
-import Trash from '../svg/trashSVG'
-import EditIcon from '../svg/editSVG'
-import UserIcon from '../svg/usersSVG'
+import Trash from '../svg/trashSVG';
+import EditIcon from '../svg/editSVG';
+import UserIcon from '../svg/usersSVG';
 import "../../App.css";
 
 const GroceryCollection = () => {
